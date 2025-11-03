@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ReactNode } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { fadeInUp, staggerContainer, staggerItem } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
@@ -16,10 +16,16 @@ export function MotionWrapper({
   className,
   variant = "fadeInUp"
 }: MotionWrapperProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   if (variant === "stagger") {
     return (
       <motion.div
-        initial="hidden"
+        initial={mounted ? "hidden" : "visible"}
         animate="visible"
         variants={staggerContainer}
         className={cn(className)}
@@ -31,7 +37,7 @@ export function MotionWrapper({
 
   return (
     <motion.div
-      initial="hidden"
+      initial={mounted ? "hidden" : "visible"}
       animate="visible"
       variants={fadeInUp}
       className={cn(className)}

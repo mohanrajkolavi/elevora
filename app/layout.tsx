@@ -1,4 +1,5 @@
 import { type Metadata } from 'next'
+import Script from 'next/script'
 import {
   ClerkProvider,
   SignInButton,
@@ -27,24 +28,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Get Plausible domain from environment variable (optional, falls back to localhost in dev)
+  const plausibleDomain =
+    process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || "localhost"
+
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${inter.variable} ${inter.className} antialiased`}>
+          {/* Plausible Analytics Script */}
+          {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+            <Script
+              defer
+              data-domain={plausibleDomain}
+              src="https://plausible.io/js/script.js"
+              strategy="afterInteractive"
+            />
+          )}
           <ThemeProvider defaultTheme="system" storageKey="elevora-theme">
-            <header className="flex justify-end items-center p-4 gap-4 h-16">
-              <SignedOut>
-                <SignInButton />
-                <SignUpButton>
-                  <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-            </header>
             {children}
             <Toaster />
           </ThemeProvider>

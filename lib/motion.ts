@@ -31,6 +31,18 @@ export const fadeInUp: Variants = {
   },
 }
 
+// Fallback for SSR - show content immediately without animation
+export const fadeInUpImmediate: Variants = {
+  hidden: {
+    opacity: 1,
+    y: 0,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
 /**
  * Stagger children animation - respects prefers-reduced-motion
  */
